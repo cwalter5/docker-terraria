@@ -4,8 +4,8 @@ FROM ubuntu:14.04.4
 MAINTAINER Chris Walter <chrisdubz@gmail.com>
 
 # Add mono repository
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328$
-  echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo te$
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
+  echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 
 # Update and install mono and a zip utility
 RUN apt-get update && apt-get install -y \
@@ -31,7 +31,7 @@ WORKDIR "/terraria/Dedicated Server/Linux"
 RUN chmod 777 TerrariaServer.exe
 
 # run the server
-ENTRYPOINT ["mono", "--server", "--gc=sgen", "-O=all", "TerrariaServer.exe", "-$
+ENTRYPOINT ["mono", "--server", "--gc=sgen", "-O=all", "TerrariaServer.exe", "-configpath", "/world", "-worldpath", "/world", "-logpath", "/world"]
 
 
 
