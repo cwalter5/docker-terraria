@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
 ENV TERRARIA_VERSION 1321
 
 ADD http://terraria.org/server/terraria-server-$TERRARIA_VERSION.zip /
-RUN unzip terraria-server-$TERRARIA_VERSION.zip "Dedicated Server/Linux/*" -d /terraria
+RUN unzip terraria-server-$TERRARIA_VERSION.zip Dedicated\ Server/Linux/* -d /terraria
 RUN rm terraria-server-$TERRARIA_VERSION.zip
 
 # Allow for external data
