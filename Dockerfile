@@ -10,7 +10,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E03280
 # Update and install mono and a zip utility
 RUN apt-get update && apt-get install -y \
   zip \
-  mono-complete && \
+  mono-complete && \ 
   apt-get clean
 
 # Download and install Terraria Server (I'm assuming they don't change their naming standards too much)
@@ -18,18 +18,19 @@ RUN apt-get update && apt-get install -y \
 ENV TERRARIA_VERSION 1321
 
 ADD http://terraria.org/server/terraria-server-$TERRARIA_VERSION.zip /
-RUN unzip terraria-server-$TERRARIA_VERSION.zip -d /terraria
+RUN unzip terraria-server-$TERRARIA_VERSION.zip 'Dedicated Server/Linux/*' -d /terraria
 RUN rm terraria-server-$TERRARIA_VERSION.zip
 
 # Allow for external data
 VOLUME ["/world"]
 
 # Set working directory to server
-WORKDIR "/terraria/Dedicated Server/Linux"
+WORKDIR "/terraria"
 
 # Set permissions
 RUN chmod 777 TerrariaServer.exe
 
+CMD screen
 # run the server
 ENTRYPOINT ["mono", "--server", "--gc=sgen", "-O=all", "TerrariaServer.exe", "-configpath", "/world", "-worldpath", "/world", "-logpath", "/world"]
 
