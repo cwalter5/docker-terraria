@@ -20,7 +20,7 @@ RUN favorites_path="/root/My Games/Terraria" && mkdir -p "$favorites_path" && ec
 ENV TSHOCK_VERSION 4.3.17
 ENV TSHOCK_FILE_POSTFIX ""
 
-ADD https://github.com/NyxStudios/TShock/releases/download/v$TSHOCK_VERSION/tshock_$TSHOCK_VERSION.zip /
+ADD https://github.com/NyxStudios/TShock/releases/download/v$TSHOCK_VERSION/tshock_release.zip /
 RUN unzip tshock_$TSHOCK_VERSION.zip -d /tshock
 RUN rm tshock_$TSHOCK_VERSION.zip
 
