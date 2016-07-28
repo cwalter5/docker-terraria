@@ -21,7 +21,7 @@ ADD http://terraria.org/server/terraria-server-$TERRARIA_VERSION.zip /
 RUN unzip terraria-server-$TERRARIA_VERSION.zip Dedicated\ Server/Linux/* -d /temp
 RUN rm terraria-server-$TERRARIA_VERSION.zip
 RUN mkdir /terraria
-CMD mv /temp/Dedicated\ Server/Linux/* -d /terraria
+RUN mv /temp/Dedicated\ Server/Linux/* -d /terraria
 RUN rm -r /temp
 
 # Allow for external data
