@@ -10,32 +10,28 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E03280
 # Update and install mono and a zip utility
 RUN apt-get update && apt-get install -y \
   zip \
-  mono-complete && \ 
+  mono-complete && \
   apt-get clean
 
-# Download and install Terraria Server (I'm assuming they don't change their naming standards too much)
-# I'm also lazy and don't want to have to repackaging the zip everytime a new server comes out.
-ENV TERRARIA_VERSION 1321
+# fix for favorites.json error
+RUN favorites_path="/root/My Games/Terraria" && mkdir -p "$favorites_path" && echo "{}" > "$favorites_path/favorites.json"
 
-ADD http://terraria.org/server/terraria-server-$TERRARIA_VERSION.zip /
-RUN unzip terraria-server-$TERRARIA_VERSION.zip Dedicated\ Server/Linux/* -d /temp
-RUN rm terraria-server-$TERRARIA_VERSION.zip
-RUN mkdir /terraria
-RUN mv /temp/Dedicated\ Server/Linux/* /terraria
-RUN rm -r /temp
+# Download and install TShock
+ENV TSHOCK_VERSION 4.3.17
+ENV TSHOCK_FILE_POSTFIX ""
+
+ADD https://github.com/NyxStudios/TShock/releases/download/v$TSHOCK_VERSION/tshock_$TSHOCK_VERSION.zip /
+RUN unzip tshock_$TSHOCK_VERSION.zip -d /tshock
+RUN rm tshock_$TSHOCK_VERSION.zip
 
 # Allow for external data
-VOLUME ["/world"]
+VOLUME ["/world", "/tshock/ServerPlugins"]
 
 # Set working directory to server
-WORKDIR "/terraria"
+WORKDIR /tshock
 
 # Set permissions
 RUN chmod 777 TerrariaServer.exe
 
 # run the server
 ENTRYPOINT ["mono", "--server", "--gc=sgen", "-O=all", "TerrariaServer.exe", "-configpath", "/world", "-worldpath", "/world", "-logpath", "/world"]
-
-
-
-
